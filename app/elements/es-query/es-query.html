@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../lo-dash/lo-dash.html">
+<link rel="import" href="../app-globals/app-globals.html">
+
+<polymer-element name="es-query" attributes="url index type query debounce response">
+    <template>
+        <app-globals id="globals"></app-globals>
+        <core-ajax id="ajaxCall"
+                   handleAs="json"
+                   method="POST"
+                   url="{{esUrl}}"
+                   auto
+                   on-core-response="{{onResponse}}">
+        </core-ajax>
+        <div on-click="{{debouncedQuery}}">{{esUrl}}</div>
+    </template>
+    <script>
+        (function () {
+            Polymer({
+                url: 'http://127.0.0.1:9200',
+                index: '_all',
+                type: '',
+                query: '{}',
+                response: '',
+                debounce: 0,
+                responseJson: '',
+                computed: {
+                    esUrl: 'url + "/" + index + "/" + (!!type ? (type + "/") : "") + "_search"'
+                },
+                queryChanged: function (oldValue, newValue) {
+                    console.log("queryChanged")
+                    this.debouncedQuery()
+                },
+                onResponse: function (xhr, response) {
+                    var response = response.response;
+                    if (response) {
+                        this.response = response;
+                        this.responseJson = JSON.stringify(response, null, " ");
+                    }
+                },
+                doQuery: function() {
+                    console.log("doQuery")
+                    var service = this.$.ajaxCall;
+                    console.log(this.query);
+                    service.body = this.query;
+                    this.$.ajaxCall.go();
+                },
+                debouncedQuery: function() {
+                    console.log(this.debounce)
+                    console.log(!this.debounce)
+                    if (!this.debounce || this.debounce == 0) {
+                        this.doQuery()
+                    }
+                    else {
+                        this.job('debouncedQuery', this.doQuery, 500)
+                    }
+                }
+            });
+        })();
+    </script>
+</polymer-element>
