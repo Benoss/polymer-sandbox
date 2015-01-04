@@ -1,0 +1,17 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="menu-layout.html">
+<link rel="import" href="../elements/es-query/es-query.html">
+
+<polymer-element name="page-query" attributes="" noscript>
+  <template>
+    <sidebar-layout selected="query">
+        <input is="core-input" value="{{$.globals.values.url}}"  />
+        <es-query id="esQuery" response="{{response}}" query="{{query}}" url="{{$.globals.values.url}}"></es-query>
+        <input is="core-input" value="{{query}}" />
+        <em>Computed : {{$.esQuery.esUrl}}</em>
+        <em> : {{query}}</em>
+        <span>Allo : {{$.esQuery.response}}</span>
+        <pre>JsonResponse : {{$.esQuery.responseJson}}</pre>
+    </sidebar-layout>
+  </template>
+</polymer-element>

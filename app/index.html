@@ -25,20 +25,39 @@
 <body unresolved>
 
 <polymer-element name="main-element" noscript>
+    <style>
+      :host {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      #core_scaffold {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+      }
+      #core_header_panel {
+        background-color: rgb(255, 255, 255);
+      }
+      #core_toolbar {
+        color: rgb(255, 255, 255);
+        background-color: rgb(79, 125, 201);
+      }
+      #core_menu {
+        font-size: 16px;
+      }
+    </style>
   <template>
-    <div class="hero-unit">
-      <app-globals id="globals"></app-globals>
-      <input is="core-input" value="{{$.globals.values.url}}"  />
-      <yo-greeting></yo-greeting>
-      <p>You now have</p>
-      <yo-list></yo-list>
-      <es-query id="esQuery" response="{{response}}" query="{{query}}" url="{{$.globals.values.url}}"></es-query>
-      <input is="core-input" value="{{query}}" />
-      <em>Computed : {{$.esQuery.esUrl}}</em>
-      <em>Allo : {{query}}</em>
-      <span>Allo : {{$.esQuery.response}}</span>
-      <pre>JsonResponse : {{$.esQuery.responseJson}}</pre>
-    </div>
+        <app-router>
+          <app-route path="/" import="/pages/page-home.html"></app-route>
+          <app-route path="/settings" import="/pages/page-settings.html"></app-route>
+          <app-route path="/query" import="/pages/page-query.html"></app-route>
+        </app-router>
   </template>
 </polymer-element>
 <main-element></main-element>
